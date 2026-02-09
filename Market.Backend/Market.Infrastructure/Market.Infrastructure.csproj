@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Database\Configurations\Catalog\**" />
+    <Compile Remove="Database\Configurations\Sales\**" />
+    <EmbeddedResource Remove="Database\Configurations\Catalog\**" />
+    <EmbeddedResource Remove="Database\Configurations\Sales\**" />
+    <None Remove="Database\Configurations\Catalog\**" />
+    <None Remove="Database\Configurations\Sales\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\JwtTokenService.cs" />
+    <Compile Remove="Database\Configurations\Identity\RefreshTokenEntityConfiguration.cs" />
+    <Compile Remove="Database\Configurations\Identity\UserEntityConfiguration.cs" />
+    <Compile Remove="Database\Seeders\DynamicDataSeeder.cs" />
+    <Compile Remove="Migrations\20251205000943_init-novi1.cs" />
+    <Compile Remove="Migrations\20251205000943_init-novi1.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	<PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.21">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.21" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.21">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Market.Application\Market.Application.csproj" />
+    <ProjectReference Include="..\Market.Domain\Market.Domain.csproj" />
+    <ProjectReference Include="..\Market.Shared\Market.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Database\Configurations\Identity\" />
+  </ItemGroup>
+
+</Project>
