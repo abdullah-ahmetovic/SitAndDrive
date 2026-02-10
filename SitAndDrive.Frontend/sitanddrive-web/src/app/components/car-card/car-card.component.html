@@ -1,0 +1,42 @@
+<div class="car-card">
+  <div class="card-header">
+    <div class="card-title-row">
+      <div>
+        <h3 class="car-name">{{ car.name }}</h3>
+        <span class="car-type">{{ car.type }}</span>
+      </div>
+      <button class="like-btn" (click)="onLike()">
+        <mat-icon [class.liked]="car.liked">{{ car.liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="card-image">
+    <img [src]="car.imageUrl" [alt]="car.name" loading="lazy">
+  </div>
+
+  <div class="card-specs">
+    <div class="spec">
+      <mat-icon class="spec-icon">local_gas_station</mat-icon>
+      <span>{{ car.fuel }}</span>
+    </div>
+    <div class="spec">
+      <mat-icon class="spec-icon">settings</mat-icon>
+      <span>{{ car.transmission }}</span>
+    </div>
+    <div class="spec">
+      <mat-icon class="spec-icon">people</mat-icon>
+      <span>{{ car.seats }} People</span>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="price">
+      <span class="amount">${{ car.pricePerDay | number:'1.2-2' }}/</span>
+      <span class="period">day</span>
+    </div>
+    <button mat-raised-button color="primary" class="rent-btn" (click)="onRent()">
+      Rent Now
+    </button>
+  </div>
+</div>
