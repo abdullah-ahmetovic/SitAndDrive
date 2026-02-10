@@ -1,0 +1,30 @@
+<div class="login-page">
+  <mat-card class="login-card">
+    <h1>Prijava</h1>
+    <p class="hint">Demo nalog: <strong>admin / Admin123!</strong></p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Korisničko ime</mat-label>
+        <input matInput formControlName="username" />
+        <mat-error *ngIf="form.controls.username.hasError('required')">
+          Korisničko ime je obavezno.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Lozinka</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error *ngIf="form.controls.password.hasError('required')">
+          Lozinka je obavezna.
+        </mat-error>
+      </mat-form-field>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+        {{ loading ? 'Prijava...' : 'Login' }}
+      </button>
+    </form>
+  </mat-card>
+</div>
