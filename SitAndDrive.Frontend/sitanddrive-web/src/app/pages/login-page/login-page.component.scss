@@ -1,0 +1,22 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.hint {
+  margin-bottom: 1rem;
+}
+
+.error {
+  color: #c62828;
+}
