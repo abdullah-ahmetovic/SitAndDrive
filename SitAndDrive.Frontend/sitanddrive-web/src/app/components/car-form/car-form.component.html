@@ -1,0 +1,152 @@
+<div class="car-form-container">
+  <h2>{{ isEdit ? 'Uredi automobil' : 'Dodaj novi automobil' }}</h2>
+
+  @if (loading) {
+    <div class="spinner-wrapper">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  @if (!loading) {
+    <mat-card>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-grid">
+            <!-- Manufacturer -->
+            <mat-form-field>
+              <mat-label>Proizvodac</mat-label>
+              <mat-select formControlName="manufacturerId" (selectionChange)="onManufacturerChange()">
+                @for (m of manufacturers; track m.id) {
+                  <mat-option [value]="m.id">{{ m.name }}</mat-option>
+                }
+              </mat-select>
+              @if (form.get('manufacturerId')?.hasError('required') && form.get('manufacturerId')?.touched) {
+                <mat-error>Proizvodac je obavezan</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Car Model -->
+            <mat-form-field>
+              <mat-label>Model</mat-label>
+              <mat-select formControlName="carModelId">
+                @for (cm of carModels; track cm.id) {
+                  <mat-option [value]="cm.id">{{ cm.name }}</mat-option>
+                }
+              </mat-select>
+              @if (form.get('carModelId')?.hasError('required') && form.get('carModelId')?.touched) {
+                <mat-error>Model je obavezan</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Branch -->
+            <mat-form-field>
+              <mat-label>Poslovnica</mat-label>
+              <mat-select formControlName="branchId">
+                @for (b of branches; track b.id) {
+                  <mat-option [value]="b.id">{{ b.name }}</mat-option>
+                }
+              </mat-select>
+              @if (form.get('branchId')?.hasError('required') && form.get('branchId')?.touched) {
+                <mat-error>Poslovnica je obavezna</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- License Plate -->
+            <mat-form-field>
+              <mat-label>Tablica</mat-label>
+              <input matInput formControlName="licensePlate" maxlength="20">
+              @if (form.get('licensePlate')?.hasError('required') && form.get('licensePlate')?.touched) {
+                <mat-error>Tablica je obavezna</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- VIN -->
+            <mat-form-field>
+              <mat-label>VIN</mat-label>
+              <input matInput formControlName="vin" maxlength="40">
+              @if (form.get('vin')?.hasError('required') && form.get('vin')?.touched) {
+                <mat-error>VIN je obavezan</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Color -->
+            <mat-form-field>
+              <mat-label>Boja</mat-label>
+              <input matInput formControlName="color" maxlength="50">
+              @if (form.get('color')?.hasError('required') && form.get('color')?.touched) {
+                <mat-error>Boja je obavezna</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Transmission -->
+            <mat-form-field>
+              <mat-label>Mjenjac</mat-label>
+              <mat-select formControlName="transmission">
+                @for (t of transmissions; track t.value) {
+                  <mat-option [value]="t.value">{{ t.label }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Year -->
+            <mat-form-field>
+              <mat-label>Godina</mat-label>
+              <input matInput type="number" formControlName="year">
+              @if (form.get('year')?.hasError('required') && form.get('year')?.touched) {
+                <mat-error>Godina je obavezna</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Power kW -->
+            <mat-form-field>
+              <mat-label>Snaga (kW)</mat-label>
+              <input matInput type="number" formControlName="powerKw">
+              @if (form.get('powerKw')?.hasError('required') && form.get('powerKw')?.touched) {
+                <mat-error>Snaga je obavezna</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Fuel Consumption -->
+            <mat-form-field>
+              <mat-label>Potrosnja (L/100km)</mat-label>
+              <input matInput type="number" formControlName="fuelConsumption">
+              @if (form.get('fuelConsumption')?.hasError('required') && form.get('fuelConsumption')?.touched) {
+                <mat-error>Potrosnja je obavezna</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Daily Price -->
+            <mat-form-field>
+              <mat-label>Dnevna cijena (KM)</mat-label>
+              <input matInput type="number" formControlName="dailyPrice">
+              @if (form.get('dailyPrice')?.hasError('required') && form.get('dailyPrice')?.touched) {
+                <mat-error>Cijena je obavezna</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Status -->
+            <mat-form-field>
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                @for (s of statuses; track s.value) {
+                  <mat-option [value]="s.value">{{ s.label }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions">
+            <button mat-button type="button" (click)="cancel()">Odustani</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="saving">
+              @if (saving) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                {{ isEdit ? 'Sacuvaj' : 'Kreiraj' }}
+              }
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
