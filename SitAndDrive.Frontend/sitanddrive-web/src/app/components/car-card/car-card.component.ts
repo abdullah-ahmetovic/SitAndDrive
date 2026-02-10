@@ -1,38 +1,44 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
-export interface CarCardData {
-  name: string;
-  type: string;
-  pricePerDay: number;
-  seats: number;
-  transmission: string;
-  fuel: string;
-  imageUrl: string;
-  liked?: boolean;
-}
+import { CarListItem, CarTransmission } from '../../models/car.model';
 
 @Component({
   selector: 'app-car-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './car-card.component.html',
   styleUrl: './car-card.component.scss'
 })
 export class CarCardComponent {
-  @Input() car!: CarCardData;
-  @Output() rentNow = new EventEmitter<CarCardData>();
-  @Output() toggleLike = new EventEmitter<CarCardData>();
+  @Input() car!: CarListItem;
+  @Input() liked = false;
+  @Output() rentNow = new EventEmitter<CarListItem>();
+  @Output() toggleLike = new EventEmitter<CarListItem>();
+
+  get displayName(): string {
+    return `${this.car.manufacturerName} ${this.car.carModelName}`;
+  }
+
+  get transmissionLabel(): string {
+    return this.car.transmission === CarTransmission.Automatic ? 'Automatic' : 'Manual';
+  }
+
+  get fuelLabel(): string {
+    return `${this.car.fuelConsumption}L`;
+  }
+
+  get powerLabel(): string {
+    return `${this.car.powerKw} kW`;
+  }
 
   onRent(): void {
     this.rentNow.emit(this.car);
   }
 
   onLike(): void {
-    this.car.liked = !this.car.liked;
+    this.liked = !this.liked;
     this.toggleLike.emit(this.car);
   }
 }

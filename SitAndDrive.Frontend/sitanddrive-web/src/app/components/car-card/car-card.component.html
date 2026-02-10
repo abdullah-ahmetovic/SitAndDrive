@@ -2,37 +2,40 @@
   <div class="card-header">
     <div class="card-title-row">
       <div>
-        <h3 class="car-name">{{ car.name }}</h3>
-        <span class="car-type">{{ car.type }}</span>
+        <h3 class="car-name">{{ displayName }}</h3>
+        <span class="car-type">{{ car.color }} &middot; {{ car.year }}</span>
       </div>
       <button class="like-btn" (click)="onLike()">
-        <mat-icon [class.liked]="car.liked">{{ car.liked ? 'favorite' : 'favorite_border' }}</mat-icon>
+        <mat-icon [class.liked]="liked">{{ liked ? 'favorite' : 'favorite_border' }}</mat-icon>
       </button>
     </div>
   </div>
 
   <div class="card-image">
-    <img [src]="car.imageUrl" [alt]="car.name" loading="lazy">
+    <!-- Placeholder: replace with actual car image when available -->
+    <div class="image-placeholder">
+      <mat-icon class="placeholder-icon">directions_car</mat-icon>
+    </div>
   </div>
 
   <div class="card-specs">
     <div class="spec">
       <mat-icon class="spec-icon">local_gas_station</mat-icon>
-      <span>{{ car.fuel }}</span>
+      <span>{{ fuelLabel }}</span>
     </div>
     <div class="spec">
       <mat-icon class="spec-icon">settings</mat-icon>
-      <span>{{ car.transmission }}</span>
+      <span>{{ transmissionLabel }}</span>
     </div>
     <div class="spec">
-      <mat-icon class="spec-icon">people</mat-icon>
-      <span>{{ car.seats }} People</span>
+      <mat-icon class="spec-icon">bolt</mat-icon>
+      <span>{{ powerLabel }}</span>
     </div>
   </div>
 
   <div class="card-footer">
     <div class="price">
-      <span class="amount">${{ car.pricePerDay | number:'1.2-2' }}/</span>
+      <span class="amount">{{ car.pricePerDay | number:'1.2-2' }} KM/</span>
       <span class="period">day</span>
     </div>
     <button mat-raised-button color="primary" class="rent-btn" (click)="onRent()">

@@ -56,6 +56,9 @@ public sealed class GetCarsQueryHandler : IRequestHandler<GetCarsQuery, PageResu
                 Year = x.Year,
                 PricePerDay = x.DailyPrice,
                 Transmission = x.Transmission,
+                Color = x.Color,
+                FuelConsumption = x.FuelConsumption,
+                PowerKw = x.PowerKw,
 
                 ManufacturerId = x.ManufacturerId,
                 ManufacturerName = x.Manufacturer.Name,
