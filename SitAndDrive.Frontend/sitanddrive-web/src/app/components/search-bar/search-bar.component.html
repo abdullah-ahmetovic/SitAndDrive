@@ -1,0 +1,82 @@
+<section class="search-section">
+  <!-- Pick-Up -->
+  <div class="search-panel">
+    <div class="panel-header">
+      <span class="radio-dot pickup"></span>
+      <span class="panel-label">Pick - Up</span>
+    </div>
+    <div class="panel-fields">
+      <div class="field-group">
+        <label class="field-label">Locations</label>
+        <mat-form-field appearance="outline" class="compact-field">
+          <mat-select [(ngModel)]="pickUpLocation" placeholder="Select city">
+            @for (loc of locations; track loc) {
+              <mat-option [value]="loc">{{ loc }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="field-divider"></div>
+      <div class="field-group">
+        <label class="field-label">Date</label>
+        <mat-form-field appearance="outline" class="compact-field">
+          <input matInput type="date" [(ngModel)]="pickUpDate">
+        </mat-form-field>
+      </div>
+      <div class="field-divider"></div>
+      <div class="field-group">
+        <label class="field-label">Time</label>
+        <mat-form-field appearance="outline" class="compact-field">
+          <mat-select [(ngModel)]="pickUpTime" placeholder="Select time">
+            @for (t of times; track t) {
+              <mat-option [value]="t">{{ t }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- Swap button -->
+  <button class="swap-btn" (click)="onSearch()">
+    <mat-icon>swap_horiz</mat-icon>
+  </button>
+
+  <!-- Drop-Off -->
+  <div class="search-panel">
+    <div class="panel-header">
+      <span class="radio-dot dropoff"></span>
+      <span class="panel-label">Drop - Off</span>
+    </div>
+    <div class="panel-fields">
+      <div class="field-group">
+        <label class="field-label">Locations</label>
+        <mat-form-field appearance="outline" class="compact-field">
+          <mat-select [(ngModel)]="dropOffLocation" placeholder="Select city">
+            @for (loc of locations; track loc) {
+              <mat-option [value]="loc">{{ loc }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="field-divider"></div>
+      <div class="field-group">
+        <label class="field-label">Date</label>
+        <mat-form-field appearance="outline" class="compact-field">
+          <input matInput type="date" [(ngModel)]="dropOffDate">
+        </mat-form-field>
+      </div>
+      <div class="field-divider"></div>
+      <div class="field-group">
+        <label class="field-label">Time</label>
+        <mat-form-field appearance="outline" class="compact-field">
+          <mat-select [(ngModel)]="dropOffTime" placeholder="Select time">
+            @for (t of times; track t) {
+              <mat-option [value]="t">{{ t }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</section>

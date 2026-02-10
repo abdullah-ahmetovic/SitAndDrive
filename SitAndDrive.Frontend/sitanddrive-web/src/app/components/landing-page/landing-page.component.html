@@ -1,0 +1,44 @@
+<div class="landing-container">
+  <!-- Hero Section -->
+  <app-hero-section></app-hero-section>
+
+  <!-- Search Bar -->
+  <app-search-bar></app-search-bar>
+
+  <!-- Popular Cars Section -->
+  <section class="cars-section">
+    <div class="section-header">
+      <h2 class="section-title">Popular Car</h2>
+      <a routerLink="/cars" class="view-all">View All</a>
+    </div>
+    <div class="cars-grid">
+      @for (car of visiblePopular; track car.name) {
+        <app-car-card [car]="car" (rentNow)="onRentNow($event)"></app-car-card>
+      }
+    </div>
+  </section>
+
+  <!-- Recommendation Cars Section -->
+  <section class="cars-section">
+    <div class="section-header">
+      <h2 class="section-title">Recommendation Car</h2>
+      <a routerLink="/cars" class="view-all">View All</a>
+    </div>
+    <div class="cars-grid">
+      @for (car of visibleRecommended; track car.name + $index) {
+        <app-car-card [car]="car" (rentNow)="onRentNow($event)"></app-car-card>
+      }
+    </div>
+    @if (recommendedCarsLimit < recommendedCars.length) {
+      <div class="show-more-wrapper">
+        <button mat-raised-button color="primary" class="show-more-btn" (click)="showMoreCars()">
+          Show more car
+        </button>
+        <span class="car-count">{{ recommendedCars.length }} Car</span>
+      </div>
+    }
+  </section>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>
