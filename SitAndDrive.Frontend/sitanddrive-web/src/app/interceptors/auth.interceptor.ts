@@ -6,8 +6,9 @@ import { AuthService } from '../services/auth.service';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
+  const loginUrl = `${environment.apiUrl}/api/sitdrive/auth/login`;
 
-  if (!token || !req.url.startsWith(environment.apiUrl)) {
+  if (!token || !req.url.startsWith(environment.apiUrl) || req.url.startsWith(loginUrl)) {
     return next(req);
   }
 

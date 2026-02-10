@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -53,15 +54,19 @@ export class LoginPageComponent {
       password: this.form.value.password ?? '',
     };
 
-    this.authService.login(request).subscribe({
-      next: () => {
+    this.authService.login(request)
+      .pipe(finalize(() => {
         this.loading = false;
-        this.router.navigate(['/cars']);
-      },
-      error: (error) => {
-        this.loading = false;
-        this.errorMessage = error?.error?.message || 'Login nije uspio.';
-      }
-    });
+      }))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/cars']);
+        },
+        error: (error) => {
+          this.errorMessage = error?.status === 401
+            ? 'Pogrešno korisničko ime ili lozinka.'
+            : 'Greška na serveru. Pokušaj ponovo.';
+        }
+      });
   }
 }

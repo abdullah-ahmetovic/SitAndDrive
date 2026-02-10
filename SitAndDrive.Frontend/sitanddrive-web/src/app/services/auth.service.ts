@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface LoginRequest {
@@ -27,6 +27,10 @@ export class AuthService {
       tap((response) => {
         localStorage.setItem(this.tokenKey, response.token);
         localStorage.setItem(this.usernameKey, response.username);
+      }),
+      catchError((error) => {
+        this.logout();
+        return throwError(() => error);
       })
     );
   }
