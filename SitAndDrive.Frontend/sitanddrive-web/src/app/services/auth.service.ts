@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, tap, throwError, timeout } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 export interface LoginRequest {
   username: string;
@@ -14,39 +15,39 @@ export interface LoginResponse {
   username: string;
 }
 
+const TOKEN_KEY = 'sitdrive.token';
+const USERNAME_KEY = 'sitdrive.username';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly tokenKey = 'sitdrive.token';
-  private readonly usernameKey = 'sitdrive.username';
-  private readonly loginUrl = `${environment.apiUrl}/api/sitdrive/auth/login`;
-  private readonly loginTimeoutMs = 2000;
+  readonly loginUrl = `${environment.apiUrl}/api/sitdrive/auth/login`;
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.loginUrl, request).pipe(
-      timeout(this.loginTimeoutMs),
-      tap((response) => {
-        localStorage.setItem(this.tokenKey, response.token);
-        localStorage.setItem(this.usernameKey, response.username);
-      }),
-      catchError((error) => {
-        this.logout();
-        return throwError(() => error);
+      tap(res => {
+        localStorage.setItem(TOKEN_KEY, res.token);
+        localStorage.setItem(USERNAME_KEY, res.username);
       })
     );
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.usernameKey);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USERNAME_KEY);
+    this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    return localStorage.getItem(TOKEN_KEY);
   }
 
-  isAuthenticated(): boolean {
+  getUsername(): string | null {
+    return localStorage.getItem(USERNAME_KEY);
+  }
+
+  isLoggedIn(): boolean {
     return !!this.getToken();
   }
 }

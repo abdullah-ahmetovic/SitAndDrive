@@ -1,27 +1,28 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet, RouterLink } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, NgIf, MatButtonModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router
-  ) {}
-
-  get isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
-  }
+  constructor(public auth: AuthService) {}
 
   logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    this.auth.logout();
   }
 }
