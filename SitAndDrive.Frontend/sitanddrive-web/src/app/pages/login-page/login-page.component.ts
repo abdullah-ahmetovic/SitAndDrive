@@ -63,9 +63,17 @@ export class LoginPageComponent {
           this.router.navigate(['/cars']);
         },
         error: (error) => {
-          this.errorMessage = error?.status === 401
-            ? 'Pogrešno korisničko ime ili lozinka.'
-            : 'Greška na serveru. Pokušaj ponovo.';
+          if (error?.status === 401) {
+            this.errorMessage = 'Pogrešno korisničko ime ili lozinka.';
+            return;
+          }
+
+          if (error?.name === 'TimeoutError' || error?.status === 0) {
+            this.errorMessage = 'Server ne odgovara. Provjeri da API radi i pokušaj ponovo.';
+            return;
+          }
+
+          this.errorMessage = 'Greška na serveru. Pokušaj ponovo.';
         }
       });
   }
