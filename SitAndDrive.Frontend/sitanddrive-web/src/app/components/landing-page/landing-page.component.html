@@ -2,7 +2,7 @@
   <!-- Hero Section -->
   <app-hero-section></app-hero-section>
 
-  <!-- Search Bar -->
+  <!-- Search Bar (Pick-Up / Drop-Off) -->
   <app-search-bar></app-search-bar>
 
   <!-- Popular Cars Section -->
@@ -11,34 +11,25 @@
       <h2 class="section-title">Popular Car</h2>
       <a routerLink="/cars" class="view-all">View All</a>
     </div>
-    <div class="cars-grid">
-      @for (car of visiblePopular; track car.name) {
-        <app-car-card [car]="car" (rentNow)="onRentNow($event)"></app-car-card>
-      }
-    </div>
-  </section>
 
-  <!-- Recommendation Cars Section -->
-  <section class="cars-section">
-    <div class="section-header">
-      <h2 class="section-title">Recommendation Car</h2>
-      <a routerLink="/cars" class="view-all">View All</a>
-    </div>
-    <div class="cars-grid">
-      @for (car of visibleRecommended; track car.name + $index) {
-        <app-car-card [car]="car" (rentNow)="onRentNow($event)"></app-car-card>
-      }
-    </div>
-    @if (recommendedCarsLimit < recommendedCars.length) {
-      <div class="show-more-wrapper">
-        <button mat-raised-button color="primary" class="show-more-btn" (click)="showMoreCars()">
-          Show more car
-        </button>
-        <span class="car-count">{{ recommendedCars.length }} Car</span>
+    @if (loading) {
+      <div class="loading-state">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    } @else if (error) {
+      <div class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <p>{{ error }}</p>
+        <button mat-raised-button color="primary" (click)="loadCars()">Pokusaj ponovo</button>
+      </div>
+    } @else {
+      <div class="cars-grid">
+        @for (car of cars; track car.id) {
+          <app-car-card [car]="car" (rentNow)="onRentNow($event)"></app-car-card>
+        }
       </div>
     }
   </section>
 </div>
 
-<!-- Footer -->
 <app-footer></app-footer>

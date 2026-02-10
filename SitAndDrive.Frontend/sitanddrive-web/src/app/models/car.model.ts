@@ -13,6 +13,9 @@ export interface CarListItem {
   year: number;
   pricePerDay: number;
   transmission: CarTransmission;
+  color: string;
+  fuelConsumption: number;
+  powerKw: number;
   manufacturerId: number;
   manufacturerName: string;
   carModelId: number;

@@ -1,20 +1,46 @@
 <mat-toolbar class="app-toolbar">
-  <a routerLink="/" class="nav-brand">SitAndDrive</a>
-  <span class="spacer"></span>
+  <div class="toolbar-inner">
+    <a routerLink="/" class="nav-brand">SitAndDrive</a>
 
-  @if (auth.isLoggedIn()) {
-    <a mat-button routerLink="/cars" class="nav-link">Automobili</a>
-    <span class="username">{{ auth.getUsername() }}</span>
-    <button mat-button (click)="logout()" class="logout-btn">
-      <mat-icon>logout</mat-icon>
-      Odjava
-    </button>
-  } @else {
-    <a mat-button routerLink="/login" class="login-link">
-      <mat-icon>login</mat-icon>
-      Prijava
-    </a>
-  }
+    <div class="toolbar-search">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" placeholder="Search something here" class="search-input">
+      <mat-icon class="filter-icon">tune</mat-icon>
+    </div>
+
+    <div class="toolbar-actions">
+      @if (auth.isLoggedIn()) {
+        <a mat-icon-button routerLink="/cars" matTooltip="Automobili">
+          <mat-icon>directions_car</mat-icon>
+        </a>
+        <button mat-icon-button>
+          <mat-icon>favorite_border</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>notifications_none</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>settings</mat-icon>
+        </button>
+        <div class="avatar-wrapper" (click)="logout()">
+          <mat-icon>person</mat-icon>
+        </div>
+      } @else {
+        <button mat-icon-button>
+          <mat-icon>favorite_border</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>notifications_none</mat-icon>
+        </button>
+        <button mat-icon-button>
+          <mat-icon>settings</mat-icon>
+        </button>
+        <a routerLink="/login" class="avatar-wrapper">
+          <mat-icon>person</mat-icon>
+        </a>
+      }
+    </div>
+  </div>
 </mat-toolbar>
 
 <router-outlet />

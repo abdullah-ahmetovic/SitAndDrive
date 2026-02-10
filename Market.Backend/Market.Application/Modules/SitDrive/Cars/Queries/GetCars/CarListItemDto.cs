@@ -13,6 +13,9 @@ public sealed class CarListItemDto
     public decimal PricePerDay { get; init; }
 
     public CarTransmission Transmission { get; init; } = default!;
+    public string Color { get; init; } = default!;
+    public double FuelConsumption { get; init; }
+    public double PowerKw { get; init; }
 
     public int ManufacturerId { get; init; }
     public string ManufacturerName { get; init; } = default!;
