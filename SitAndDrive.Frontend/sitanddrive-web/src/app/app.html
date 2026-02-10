@@ -1,5 +1,6 @@
 <nav class="app-nav">
   <a routerLink="/cars" class="nav-brand">SitAndDrive</a>
+  <button mat-button *ngIf="isAuthenticated" (click)="logout()">Logout</button>
 </nav>
 
 <router-outlet />
