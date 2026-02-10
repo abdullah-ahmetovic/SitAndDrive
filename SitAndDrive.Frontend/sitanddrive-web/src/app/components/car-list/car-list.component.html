@@ -1,0 +1,150 @@
+<div class="car-list-container">
+  <div class="header">
+    <h2>Automobili</h2>
+    <button mat-raised-button color="primary" (click)="addCar()">
+      <mat-icon>add</mat-icon> Dodaj auto
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <mat-card class="filter-card">
+    <mat-card-content>
+      <div class="filter-row">
+        <mat-form-field>
+          <mat-label>Poslovnica</mat-label>
+          <mat-select [(ngModel)]="filter.branchId" (selectionChange)="applyFilter()">
+            <mat-option [value]="null">-- Sve --</mat-option>
+            @for (b of branches; track b.id) {
+              <mat-option [value]="b.id">{{ b.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Proizvodac</mat-label>
+          <mat-select [(ngModel)]="filter.manufacturerId" (selectionChange)="onManufacturerFilterChange()">
+            <mat-option [value]="null">-- Svi --</mat-option>
+            @for (m of manufacturers; track m.id) {
+              <mat-option [value]="m.id">{{ m.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Model</mat-label>
+          <mat-select [(ngModel)]="filter.carModelId" (selectionChange)="applyFilter()">
+            <mat-option [value]="null">-- Svi --</mat-option>
+            @for (cm of carModels; track cm.id) {
+              <mat-option [value]="cm.id">{{ cm.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Godina od</mat-label>
+          <input matInput type="number" [(ngModel)]="filter.yearFrom" (change)="applyFilter()">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Godina do</mat-label>
+          <input matInput type="number" [(ngModel)]="filter.yearTo" (change)="applyFilter()">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Cijena od</mat-label>
+          <input matInput type="number" [(ngModel)]="filter.priceFrom" (change)="applyFilter()">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Cijena do</mat-label>
+          <input matInput type="number" [(ngModel)]="filter.priceTo" (change)="applyFilter()">
+        </mat-form-field>
+
+        <button mat-button (click)="resetFilter()">
+          <mat-icon>clear</mat-icon> Resetuj
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Loading spinner -->
+  @if (loading) {
+    <div class="spinner-wrapper">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  <!-- Table -->
+  <div class="table-container">
+    <table mat-table [dataSource]="cars">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let car">{{ car.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="licensePlate">
+        <th mat-header-cell *matHeaderCellDef>Tablica</th>
+        <td mat-cell *matCellDef="let car">{{ car.licensePlate }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="manufacturer">
+        <th mat-header-cell *matHeaderCellDef>Proizvodac</th>
+        <td mat-cell *matCellDef="let car">{{ car.manufacturerName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef>Model</th>
+        <td mat-cell *matCellDef="let car">{{ car.carModelName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="year">
+        <th mat-header-cell *matHeaderCellDef>Godina</th>
+        <td mat-cell *matCellDef="let car">{{ car.year }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="transmission">
+        <th mat-header-cell *matHeaderCellDef>Mjenjac</th>
+        <td mat-cell *matCellDef="let car">{{ getTransmissionLabel(car.transmission) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="pricePerDay">
+        <th mat-header-cell *matHeaderCellDef>Cijena/dan</th>
+        <td mat-cell *matCellDef="let car">{{ car.pricePerDay | number:'1.2-2' }} KM</td>
+      </ng-container>
+
+      <ng-container matColumnDef="branch">
+        <th mat-header-cell *matHeaderCellDef>Poslovnica</th>
+        <td mat-cell *matCellDef="let car">{{ car.branchName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Akcije</th>
+        <td mat-cell *matCellDef="let car">
+          <button mat-icon-button color="primary" (click)="editCar(car.id)" title="Uredi">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteCar(car)" title="Obrisi">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    @if (!loading && cars.length === 0) {
+      <div class="no-data">Nema automobila za prikaz.</div>
+    }
+  </div>
+
+  <!-- Paginator -->
+  <mat-paginator
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageIndex]="page - 1"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    (page)="onPageChange($event)"
+    showFirstLastButtons>
+  </mat-paginator>
+</div>
