@@ -1,5 +1,13 @@
-<nav class="app-nav">
+<mat-toolbar color="primary" class="app-toolbar">
   <a routerLink="/cars" class="nav-brand">SitAndDrive</a>
-</nav>
+  <span class="spacer"></span>
+  @if (auth.isLoggedIn()) {
+    <span class="username">{{ auth.getUsername() }}</span>
+    <button mat-button (click)="logout()" class="logout-btn">
+      <mat-icon>logout</mat-icon>
+      Odjava
+    </button>
+  }
+</mat-toolbar>
 
 <router-outlet />
