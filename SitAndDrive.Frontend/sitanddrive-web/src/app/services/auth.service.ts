@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap, delay } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 
 export interface LoginRequest {
@@ -13,6 +13,13 @@ export interface LoginResponse {
   token: string;
   expiresAt: string;
   username: string;
+}
+
+export interface RegisterRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
 }
 
 const TOKEN_KEY = 'sitdrive.token';
@@ -49,5 +56,11 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  /** Simulated registration - replace with real API call later */
+  register(request: RegisterRequest): Observable<boolean> {
+    // TODO: Replace with this.http.post(`${environment.apiUrl}/api/sitdrive/auth/register`, request)
+    return of(true).pipe(delay(800));
   }
 }

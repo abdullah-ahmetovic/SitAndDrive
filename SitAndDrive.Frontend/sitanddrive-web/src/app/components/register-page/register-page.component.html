@@ -1,0 +1,185 @@
+<div class="register-wrapper">
+  <mat-card class="register-card">
+    <mat-card-header>
+      <mat-card-title>SitAndDrive</mat-card-title>
+      <mat-card-subtitle>Kreiraj novi racun</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (successMessage) {
+        <div class="success-box">
+          <mat-icon class="success-icon">check_circle</mat-icon>
+          <span>{{ successMessage }}</span>
+        </div>
+      } @else {
+        <mat-stepper linear #stepper>
+          <!-- Step 1: Osnovni podaci -->
+          <mat-step [stepControl]="basicForm" label="Osnovni podaci">
+            <form [formGroup]="basicForm">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Ime</mat-label>
+                <input matInput formControlName="firstName" autocomplete="given-name">
+                @if (basicForm.get('firstName')?.hasError('required') && basicForm.get('firstName')?.touched) {
+                  <mat-error>Ime je obavezno</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Prezime</mat-label>
+                <input matInput formControlName="lastName" autocomplete="family-name">
+                @if (basicForm.get('lastName')?.hasError('required') && basicForm.get('lastName')?.touched) {
+                  <mat-error>Prezime je obavezno</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" autocomplete="email">
+                @if (basicForm.get('email')?.hasError('required') && basicForm.get('email')?.touched) {
+                  <mat-error>Email je obavezan</mat-error>
+                } @else if (basicForm.get('email')?.hasError('email') && basicForm.get('email')?.touched) {
+                  <mat-error>Unesite validan email</mat-error>
+                }
+              </mat-form-field>
+
+              <div class="step-actions">
+                <span></span>
+                <button mat-raised-button color="primary" matStepperNext
+                        [disabled]="basicForm.invalid" class="step-btn">
+                  Dalje
+                </button>
+              </div>
+            </form>
+          </mat-step>
+
+          <!-- Step 2: Sigurnost -->
+          <mat-step [stepControl]="securityForm" label="Sigurnost">
+            <form [formGroup]="securityForm">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Lozinka</mat-label>
+                <input matInput [type]="hidePassword ? 'password' : 'text'"
+                       formControlName="password" autocomplete="new-password">
+                <button mat-icon-button matSuffix type="button"
+                        (click)="hidePassword = !hidePassword"
+                        [attr.aria-label]="hidePassword ? 'Prikazi lozinku' : 'Sakrij lozinku'">
+                  <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                @if (securityForm.get('password')?.hasError('required') && securityForm.get('password')?.touched) {
+                  <mat-error>Lozinka je obavezna</mat-error>
+                } @else if (securityForm.get('password')?.hasError('minlength') && securityForm.get('password')?.touched) {
+                  <mat-error>Minimalno 8 karaktera</mat-error>
+                }
+              </mat-form-field>
+
+              <!-- Password Strength Meter -->
+              @if (passwordValue) {
+                <div class="strength-meter">
+                  <mat-progress-bar mode="determinate"
+                                    [value]="strengthPercent"
+                                    [color]="strengthColor">
+                  </mat-progress-bar>
+                  <span class="strength-label" [style.color]="strengthColorHex">
+                    {{ strengthLabel }}
+                  </span>
+                  <div class="strength-rules">
+                    <span [class.met]="hasLength">
+                      <mat-icon>{{ hasLength ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                      Min. 8 karaktera
+                    </span>
+                    <span [class.met]="hasUpper">
+                      <mat-icon>{{ hasUpper ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                      Veliko slovo
+                    </span>
+                    <span [class.met]="hasLower">
+                      <mat-icon>{{ hasLower ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                      Malo slovo
+                    </span>
+                    <span [class.met]="hasDigit">
+                      <mat-icon>{{ hasDigit ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                      Broj
+                    </span>
+                    <span [class.met]="hasSpecial">
+                      <mat-icon>{{ hasSpecial ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                      Specijalni znak
+                    </span>
+                  </div>
+                </div>
+              }
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Potvrdi lozinku</mat-label>
+                <input matInput [type]="hideConfirm ? 'password' : 'text'"
+                       formControlName="confirmPassword" autocomplete="new-password">
+                <button mat-icon-button matSuffix type="button"
+                        (click)="hideConfirm = !hideConfirm"
+                        [attr.aria-label]="hideConfirm ? 'Prikazi lozinku' : 'Sakrij lozinku'">
+                  <mat-icon>{{ hideConfirm ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                @if (securityForm.get('confirmPassword')?.hasError('required') && securityForm.get('confirmPassword')?.touched) {
+                  <mat-error>Potvrda lozinke je obavezna</mat-error>
+                } @else if (securityForm.hasError('passwordMismatch') && securityForm.get('confirmPassword')?.touched) {
+                  <mat-error>Lozinke se ne poklapaju</mat-error>
+                }
+              </mat-form-field>
+
+              <div class="step-actions">
+                <button mat-button matStepperPrevious class="back-btn">Nazad</button>
+                <button mat-raised-button color="primary" matStepperNext
+                        [disabled]="securityForm.invalid" class="step-btn">
+                  Dalje
+                </button>
+              </div>
+            </form>
+          </mat-step>
+
+          <!-- Step 3: Potvrda -->
+          <mat-step label="Potvrda">
+            <div class="summary">
+              <h3 class="summary-title">Pregled podataka</h3>
+
+              <div class="summary-row">
+                <span class="summary-label">Ime:</span>
+                <span class="summary-value">{{ basicForm.value.firstName }}</span>
+              </div>
+              <div class="summary-row">
+                <span class="summary-label">Prezime:</span>
+                <span class="summary-value">{{ basicForm.value.lastName }}</span>
+              </div>
+              <div class="summary-row">
+                <span class="summary-label">Email:</span>
+                <span class="summary-value">{{ basicForm.value.email }}</span>
+              </div>
+              <div class="summary-row">
+                <span class="summary-label">Lozinka:</span>
+                <span class="summary-value">********</span>
+              </div>
+            </div>
+
+            @if (errorMessage) {
+              <div class="error-box">
+                <mat-icon class="error-icon">error</mat-icon>
+                <span>{{ errorMessage }}</span>
+              </div>
+            }
+
+            <div class="step-actions">
+              <button mat-button matStepperPrevious class="back-btn">Nazad</button>
+              <button mat-raised-button color="primary" class="step-btn"
+                      [disabled]="loading" (click)="onSubmit()">
+                @if (loading) {
+                  <mat-spinner diameter="22" class="btn-spinner"></mat-spinner>
+                } @else {
+                  Kreiraj racun
+                }
+              </button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+
+        <div class="auth-link">
+          Vec imas racun? <a routerLink="/login">Prijavi se</a>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>
