@@ -17,6 +17,14 @@
           <mat-step [stepControl]="basicForm" label="Osnovni podaci">
             <form [formGroup]="basicForm">
               <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Korisnicko ime</mat-label>
+                <input matInput formControlName="username" autocomplete="username">
+                @if (basicForm.get('username')?.hasError('required') && basicForm.get('username')?.touched) {
+                  <mat-error>Korisnicko ime je obavezno</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Ime</mat-label>
                 <input matInput formControlName="firstName" autocomplete="given-name">
                 @if (basicForm.get('firstName')?.hasError('required') && basicForm.get('firstName')?.touched) {
@@ -137,6 +145,10 @@
             <div class="summary">
               <h3 class="summary-title">Pregled podataka</h3>
 
+              <div class="summary-row">
+                <span class="summary-label">Korisnicko ime:</span>
+                <span class="summary-value">{{ basicForm.value.username }}</span>
+              </div>
               <div class="summary-row">
                 <span class="summary-label">Ime:</span>
                 <span class="summary-value">{{ basicForm.value.firstName }}</span>
