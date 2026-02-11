@@ -55,6 +55,7 @@ export class RegisterPageComponent {
     private router: Router
   ) {
     this.basicForm = this.fb.group({
+      username: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -131,6 +132,7 @@ export class RegisterPageComponent {
     this.errorMessage = '';
 
     const request = {
+      username: this.basicForm.value.username,
       firstName: this.basicForm.value.firstName,
       lastName: this.basicForm.value.lastName,
       email: this.basicForm.value.email,
