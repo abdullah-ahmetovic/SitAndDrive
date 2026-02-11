@@ -75,3 +75,20 @@
 ::ng-deep .btn-spinner circle {
   stroke: #fff !important;
 }
+
+.auth-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.88rem;
+  color: #596780;
+
+  a {
+    color: #3563E9;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
